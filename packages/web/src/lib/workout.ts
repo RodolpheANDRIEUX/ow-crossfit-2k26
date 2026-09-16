@@ -80,7 +80,7 @@ export function currentIndex(state: RunState): number {
 export interface RailItem {
   id: string;
   name: string;
-  /** done = validee · waiting = points atteints, minimums en attente · current · todo */
+  /** done = validee · waiting = points atteints, minimums en attente · current · to do */
   state: 'done' | 'waiting' | 'current' | 'todo';
   splitMs: number | null;
 }
