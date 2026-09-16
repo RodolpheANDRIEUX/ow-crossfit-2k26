@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.env
+*.log
+.DS_Store
+packages/web/dev-dist/
+packages/server/public/

@@ -1,0 +1,20 @@
+# Les dependances sont installees DANS l'image (npm ci) : jamais celles de la
+# machine hote. Un node_modules Windows contient des liens de workspace vers
+# des chemins C:\... introuvables sous Linux, et des binaires natifs Windows.
+**/node_modules
+**/dist
+**/dev-dist
+packages/server/public
+
+# Secrets et fichiers locaux
+.env
+.env.*
+!.env.example
+certs
+*.pem
+
+# Outils
+.git
+.idea
+.vscode
+*.log

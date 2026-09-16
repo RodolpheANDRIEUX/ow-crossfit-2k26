@@ -1,0 +1,28 @@
+{
+  "name": "ow-compteur",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/shared",
+    "packages/server",
+    "packages/web"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,web -c cyan,magenta \"npm:dev:server\" \"npm:dev:web\"",
+    "dev:server": "npm run dev -w @ow/server",
+    "dev:web": "npm run dev -w @ow/web",
+    "build": "npm run build -w @ow/web && npm run build -w @ow/server",
+    "start": "npm run start -w @ow/server",
+    "check": "npm run check -w @ow/shared && npm run check -w @ow/server && npm run check -w @ow/web",
+    "test": "npm run test -w @ow/shared && npm run test -w @ow/server",
+    "db:up": "docker compose up -d db"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "typescript": "^5.7.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

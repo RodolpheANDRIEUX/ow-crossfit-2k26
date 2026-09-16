@@ -1,0 +1,50 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-ow}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ow}
+      POSTGRES_DB: ${POSTGRES_DB:-ow}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      # Expose en local pour le developpement (DB_PORT si 5432 est deja pris).
+      - '${DB_PORT:-5432}:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-ow} -d ${POSTGRES_DB:-ow}']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-ow}:${POSTGRES_PASSWORD:-ow}@db:5432/${POSTGRES_DB:-ow}
+      AUTH_SECRET: ${AUTH_SECRET:?definir AUTH_SECRET}
+      ADMIN_CODE: ${ADMIN_CODE:-OW2026}
+      CORS_ORIGIN: ${CORS_ORIGIN:-*}
+      PORT: '3000'
+    ports:
+      - '3000:3000'
+    healthcheck:
+      test: ['CMD', 'node', '-e', "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    labels:
+      # --- Traefik (reverse proxy + TLS). Adapter le domaine. ---
+      traefik.enable: 'true'
+      traefik.http.routers.ow.rule: Host(`${PUBLIC_HOST:-ow.example.com}`)
+      traefik.http.routers.ow.entrypoints: websecure
+      traefik.http.routers.ow.tls.certresolver: letsencrypt
+      traefik.http.services.ow.loadbalancer.server.port: '3000'
+      # Le WebSocket passe par le meme routeur : rien de plus a configurer.
+
+volumes:
+  db-data:

@@ -1,0 +1,295 @@
+/* ------------------------------------------------------------------
+   Systeme de design — sobre, sombre, lisible en plein soleil.
+   Peu de couleurs : le vert ne sert qu'a "c'est valide".
+------------------------------------------------------------------ */
+
+:root {
+  --bg: #111214;
+  --surface: #191b1e;
+  --surface-2: #212429;
+  --surface-3: #2a2e34;
+  --line: #2c3037;
+  --line-soft: #23262b;
+  --text: #f3f4f6;
+  --muted: #8d949d;
+  --muted-2: #5e646c;
+  --accent: #22c55e;
+  --accent-dim: #16803c;
+  --warn: #f0a020;
+  --danger: #ef4444;
+  --accent-hover: #2ad469;
+  --on-accent: #05240f;
+  --tap: #e7e8ea;
+  --tap-press: #c9cbcf;
+  --tap-text: #16181c;
+  --tap-muted: #5c6067;
+  --tap-border: transparent;
+  --grid-dot: #24272c;
+
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-xl: 26px;
+
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.28);
+
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  color-scheme: dark;
+}
+
+/* Theme clair, pour le plein soleil : contrastes renforces, memes reperes. */
+:root[data-theme='light'] {
+  --bg: #f4f5f7;
+  --surface: #ffffff;
+  --surface-2: #eceef1;
+  --surface-3: #e0e3e7;
+  --line: #cfd4da;
+  --line-soft: #e2e5e9;
+  --text: #111317;
+  --muted: #51575f;
+  --muted-2: #80878f;
+  --accent: #15803d;
+  --accent-dim: #166534;
+  --accent-hover: #166534;
+  --on-accent: #ffffff;
+  --warn: #b45309;
+  --danger: #dc2626;
+  --tap: #e6e8eb;
+  --tap-press: #cdd1d6;
+  --tap-text: #111317;
+  --tap-muted: #474c53;
+  --tap-border: #c4c9cf;
+  --grid-dot: #dde1e5;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.08), 0 8px 24px rgb(0 0 0 / 0.1);
+
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 16px;
+  overscroll-behavior: none;
+}
+
+#app {
+  min-height: 100%;
+  min-height: 100dvh;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+/* Chiffres de score et de chrono : largeur fixe, aucun tremblement. */
+.num {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* --- Boutons --------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  color: var(--text);
+  font-weight: 550;
+  cursor: pointer;
+  transition:
+    background 0.12s ease,
+    border-color 0.12s ease,
+    transform 0.06s ease;
+}
+.btn:hover:not(:disabled) {
+  background: var(--surface-3);
+}
+.btn:active:not(:disabled) {
+  transform: scale(0.985);
+}
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+.btn.primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+.btn.ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--muted);
+}
+.btn.ghost:hover:not(:disabled) {
+  background: var(--surface-2);
+  color: var(--text);
+}
+.btn.danger {
+  border-color: transparent;
+  color: var(--danger);
+  background: transparent;
+}
+.btn.danger:hover:not(:disabled) {
+  background: rgb(239 68 68 / 0.12);
+}
+.btn.sm {
+  min-height: 32px;
+  padding: 5px 10px;
+  font-size: 14px;
+  border-radius: var(--r-sm);
+}
+
+/* --- Champs ---------------------------------------------------- */
+
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  min-height: 42px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  outline: none;
+  transition: border-color 0.12s ease;
+}
+.input:focus {
+  border-color: var(--muted);
+}
+.input.inline {
+  background: transparent;
+  border-color: transparent;
+  padding: 4px 8px;
+  min-height: 32px;
+}
+.input.inline:hover {
+  background: var(--surface-2);
+}
+.input.inline:focus {
+  background: var(--surface);
+  border-color: var(--line);
+}
+
+.label {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+/* --- Surfaces -------------------------------------------------- */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-lg);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--surface-2);
+  color: var(--muted);
+  border: 1px solid var(--line-soft);
+  white-space: nowrap;
+}
+.pill.ok {
+  color: var(--accent);
+  border-color: rgb(34 197 94 / 0.3);
+  background: rgb(34 197 94 / 0.1);
+}
+.pill.warn {
+  color: var(--warn);
+  border-color: rgb(240 160 32 / 0.3);
+  background: rgb(240 160 32 / 0.1);
+}
+.pill.live {
+  color: var(--text);
+  border-color: rgb(255 255 255 / 0.16);
+}
+
+.muted {
+  color: var(--muted);
+}
+.tiny {
+  font-size: 12px;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.spacer {
+  flex: 1;
+}
+
+/* Fond quadrille facon plan de travail : donne de l'espace sans bruit. */
+.canvas {
+  background-image: radial-gradient(circle at 1px 1px, var(--grid-dot) 1px, transparent 0);
+  background-size: 26px 26px;
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 100;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--surface-3);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  font-size: 14px;
+  max-width: min(92vw, 460px);
+  text-align: center;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--surface-3);
+  border-radius: 999px;
+  border: 3px solid var(--bg);
+}
